@@ -164,7 +164,7 @@ public class UsuarioControlador extends HttpServlet {
 
                     Herramientas.Persistencias.setUser(user);
                     sesion.setAttribute("usuarioLogueado", user);
-                    request.getRequestDispatcher("/Index.jsp").forward(request, response);
+                    request.getRequestDispatcher("Vistas/Index.jsp").forward(request, response);
 
                 } catch (SQLException e) {
                     e.printStackTrace();
