@@ -21,7 +21,7 @@ import java.util.ArrayList;
  *
  * @author USUARIO
  */
-@WebServlet(name = "UsuarioControlador", urlPatterns = {"/UsuarioControlador"})
+@WebServlet(name = "UsuarioControlador", urlPatterns = {"../UsuarioControlador"})
 public class UsuarioControlador extends HttpServlet {
 
     @Override
