@@ -24,8 +24,9 @@
                 <input type="submit" value="Iniciar Sesión">
             </form>
 
-            <c:if test="${not empty errorLogin}">
-                <div class="error-message">${errorLogin}</div>
-            </c:if>
+            <% if(request.getAttribute("errorLogin") != null) { %>
+            <div class="error-message"><%= request.getAttribute("errorLogin") %></div>
+            <% } %>
+
     </body>
 </html>
