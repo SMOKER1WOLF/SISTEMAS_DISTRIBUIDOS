@@ -173,7 +173,7 @@ public class UsuarioControlador extends HttpServlet {
                 } catch (Exception e) {
                     e.printStackTrace();
                     request.setAttribute("errorLogin", "Ocurrió un error inesperado: " + e.getMessage());
-                    request.getRequestDispatcher("Vistas/Login.jsp").forward(request, response);
+                    request.getRequestDispatcher("index.jsp").forward(request, response);
                 }
 
                 break;
