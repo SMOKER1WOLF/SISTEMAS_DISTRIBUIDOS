@@ -12,11 +12,12 @@ public class Conexion {
             try {
                 Class.forName("com.mysql.cj.jdbc.Driver");
 
-                String url = System.getenv("DB_URL");
-                String user = System.getenv("DB_USER");
-                String pass = System.getenv("DB_PASS");
+                String url = "jdbc:mysql://centerbeam.proxy.rlwy.net:37177/railway?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true";
+                String user = "root";
+                String pass = "NfiRUMprCyZhzdxvLDtllIpgIapWVwaU";
 
                 cn = DriverManager.getConnection(url, user, pass);
+                System.out.println(">>> Conexión a Railway exitosa!");
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -24,7 +25,7 @@ public class Conexion {
         return cn;
     }
 
-    public void disconnect() {
+    public static void disconnect() {
         if (cn != null) {
             try {
                 cn.close();
@@ -32,7 +33,6 @@ public class Conexion {
                 cn = null;
             } catch (Exception ex) {
                 System.out.println(ex.toString());
-                System.out.println("");
             }
         }
     }
