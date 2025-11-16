@@ -24,9 +24,14 @@
                 <input type="submit" value="Iniciar Sesión">
             </form>
 
-            <c:if test="${not empty param.errorLogin}">
-                <div class="error-message">${param.errorLogin}</div>
-            </c:if>
+            <%
+                String errorLogin = request.getParameter("errorLogin");
+                if (errorLogin != null && !errorLogin.trim().isEmpty()) {
+            %>
+            <div class="error-message"><%= errorLogin %></div>
+            <%
+                }
+            %>
 
 
     </body>
