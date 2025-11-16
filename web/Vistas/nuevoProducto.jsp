@@ -1,5 +1,4 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="es">
     <head>
@@ -13,15 +12,31 @@
         <div class="container mt-5">
             <h2 class="text-center mb-4">Nuevo Producto</h2>
 
-            <c:if test="${not empty mensaje}">
-                <div class="alert alert-success">${mensaje}</div>
-            </c:if>
+            <!-- Mensajes exitosos -->
+            <% 
+                if (request.getAttribute("mensaje") != null) { 
+            %>
+            <div class="alert alert-success">
+                <%= request.getAttribute("mensaje") %>
+            </div>
+            <% 
+                }
+            %>
 
-            <c:if test="${not empty error}">
-                <div class="alert alert-danger">${error}</div>
-            </c:if>
+            <!-- Mensajes de error -->
+            <% 
+                if (request.getAttribute("error") != null) { 
+            %>
+            <div class="alert alert-danger">
+                <%= request.getAttribute("error") %>
+            </div>
+            <% 
+                } 
+            %>
 
-            <form action="${pageContext.request.contextPath}/ProductoControlador" method="post" class="card p-4 shadow-sm">
+
+            <!-- Formulario -->
+            <form action="<%= request.getContextPath() %>/ProductoControlador" method="post" class="card p-4 shadow-sm">
                 <input type="hidden" name="op" value="insertar">
 
                 <div class="mb-3">
@@ -39,14 +54,15 @@
                     <input type="number" step="0.01" name="precio" class="form-control" min="0" required>
                 </div>
 
+                <!-- Botones -->
                 <div class="text-center">
                     <button type="submit" class="btn btn-primary">Guardar Producto</button>
 
-                    <!-- Corrección del botón ATRÁS -->
                     <a href="${pageContext.request.contextPath}/UsuarioControlador?Op=VolverInicio" class="btn btn-secondary">Atras</a>
                     <a href="${pageContext.request.contextPath}/ProductoControlador?op=listar" 
-               class="btn btn-secondary">Lista de productos</a>
+                       class="btn btn-secondary">Lista de productos</a>
                 </div>
+
             </form>
         </div>
 
