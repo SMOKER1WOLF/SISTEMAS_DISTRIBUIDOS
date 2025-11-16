@@ -109,7 +109,7 @@ public class ClienteControlador extends HttpServlet {
         } catch (SQLException e) {
             e.printStackTrace();
             request.setAttribute("error", "Error al consultar cliente: " + e.getMessage());
-            request.getRequestDispatcher("listarClientes.jsp").forward(request, response);
+            request.getRequestDispatcher("/Vistas/listarClientes.jsp").forward(request, response);
         }
     }
 
@@ -143,7 +143,7 @@ public class ClienteControlador extends HttpServlet {
             request.setAttribute("error", "⚠️ Error al registrar cliente: " + e.getMessage());
         }
         
-        request.getRequestDispatcher("nuevoCliente.jsp").forward(request, response);
+        request.getRequestDispatcher("/Vistas/nuevoCliente.jsp").forward(request, response);
     }
 
     private void modificarCliente(HttpServletRequest request, HttpServletResponse response, ClienteDAO clienteDAO) 
@@ -176,7 +176,7 @@ public class ClienteControlador extends HttpServlet {
             request.setAttribute("error", "⚠️ Error al modificar cliente: " + e.getMessage());
         }
         
-        request.getRequestDispatcher("modificarCliente.jsp").forward(request, response);
+        request.getRequestDispatcher("/Vistas/modificarCliente.jsp").forward(request, response);
     }
 
     private void eliminarCliente(HttpServletRequest request, HttpServletResponse response, ClienteDAO clienteDAO) 
@@ -201,7 +201,7 @@ public class ClienteControlador extends HttpServlet {
             request.setAttribute("error", "⚠️ Error al eliminar cliente: " + e.getMessage());
         }
         
-        request.getRequestDispatcher("listarClientes.jsp").forward(request, response);
+        request.getRequestDispatcher("/Vistas/listarClientes.jsp").forward(request, response);
     }
 
     @Override

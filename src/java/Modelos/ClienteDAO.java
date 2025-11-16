@@ -39,14 +39,14 @@ public class ClienteDAO {
         }
     }
     
-    public void cerrarRecursos() {
-        try {
-            if (rs != null) rs.close();
-            if (ps != null) ps.close();
-        } catch (SQLException e) {
-            System.out.println("Error al cerrar recursos: " + e.getMessage());
-        }
-    }
+//    public void cerrarRecursos() {
+//        try {
+//            if (rs != null) rs.close();
+//            if (ps != null) ps.close();
+//        } catch (SQLException e) {
+//            System.out.println("Error al cerrar recursos: " + e.getMessage());
+//        }
+//    }
     
     // Listar todos los clientes
     public List<Cliente> listarClientes() throws SQLException {
@@ -68,7 +68,8 @@ public class ClienteDAO {
                 listaCliente.add(cli);
             }
         } finally {
-            cerrarRecursos();
+            if (rs != null) rs.close();
+            if (ps != null) ps.close();
         }
         return listaCliente;
     }
@@ -93,7 +94,8 @@ public class ClienteDAO {
                 cliente.setMovil(rs.getString("movil"));
             }
         } finally {
-            cerrarRecursos();
+            if (rs != null) rs.close();
+            if (ps != null) ps.close();
         }
         return cliente;
     }
@@ -113,7 +115,8 @@ public class ClienteDAO {
             
             return ps.executeUpdate() > 0;
         } finally {
-            cerrarRecursos();
+            if (rs != null) rs.close();
+            if (ps != null) ps.close();
         }
     }
     
@@ -132,7 +135,8 @@ public class ClienteDAO {
             
             return ps.executeUpdate() > 0;
         } finally {
-            cerrarRecursos();
+            if (rs != null) rs.close();
+            if (ps != null) ps.close();
         }
     }
     
@@ -145,7 +149,8 @@ public class ClienteDAO {
             
             return ps.executeUpdate() > 0;
         } finally {
-            cerrarRecursos();
+            if (rs != null) rs.close();
+            if (ps != null) ps.close();
         }
     }
     
@@ -165,7 +170,8 @@ public class ClienteDAO {
                 }
             }
         } finally {
-            cerrarRecursos();
+            if (rs != null) rs.close();
+            if (ps != null) ps.close();
         }
         return nuevoId;
     }

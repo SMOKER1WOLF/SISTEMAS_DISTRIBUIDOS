@@ -10,7 +10,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Lista de clientes</title>
         <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/styles_lista.css">
-        <a href="${pageContext.request.contextPath}/UsuarioControlador?Op=VolverInicio">Inicio</a>
+        
     </head>
     <body>
         <h1>Lista de clientes</h1>
@@ -31,8 +31,8 @@
                 <td><%= campo.getApellidos() %></td>
                 <td><%= campo.getNombres() %></td>
                 <td><%= campo.getDNI() %></td>
-                <td><a href="${pageContext.request.contextPath}/ClienteControlador?Op=Consultar&idCliente=<%= campo.getIdCliente() %>&pagina=consultaCliente.jsp">Consultar</a></td>
-                <td><a href="${pageContext.request.contextPath}/ClienteControlador?Op=Consultar&idCliente=<%= campo.getIdCliente() %>&pagina=modificarCliente.jsp">Modificar</a></td>
+                <td><a href="${pageContext.request.contextPath}/ClienteControlador?Op=Consultar&idCliente=<%= campo.getIdCliente() %>&pagina=Vistas/consultaCliente.jsp">Consultar</a></td>
+                <td><a href="${pageContext.request.contextPath}/ClienteControlador?Op=Consultar&idCliente=<%= campo.getIdCliente() %>&pagina=Vistas/modificarCliente.jsp">Modificar</a></td>
                 <td><a href="${pageContext.request.contextPath}/ClienteControlador?Op=Eliminar&idCliente=<%= campo.getIdCliente() %>" 
                        onclick="return confirm('¿Seguro que deseas eliminar este cliente?');">
                         Eliminar
