@@ -6,5 +6,7 @@
 
 <%@ page language="java" %>
 <%
+    String error =request.getParameter("errorLogin");
+    request.setAttribute("errorLogin", error);
     response.sendRedirect("Vistas/Login.jsp");
 %>

@@ -1,8 +1,8 @@
 package Controladores;
 
-//import Entidades.Cliente;
 import Entidades.Usuario;
 import Herramientas.Conexion;
+import Modelos.UsuarioDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -10,226 +10,175 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 
-/**
- *
- * @author USUARIO
- */
 @WebServlet(name = "UsuarioControlador", urlPatterns = {"/UsuarioControlador"})
 public class UsuarioControlador extends HttpServlet {
+
+    private final String pagLogin = "/Vistas/Login.jsp";
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
         String Op = request.getParameter("Op");
-//        ArrayList<Cliente> listaCliente = new ArrayList<Cliente>();
+        UsuarioDAO usuarioDAO = new UsuarioDAO();
 
-        Conexion conect = new Conexion();
-        Connection con = conect.establecerConexion();
+        try {
+            switch (Op) {
 
-        PreparedStatement ps;
-        ResultSet rs;
+                case "Loguin":
+                    procesarLogin(request, response, usuarioDAO);
+                    break;
 
-        switch (Op) {
-//            case "Listar":
-//            try {
-//                String sql = "Select * from cliente";
-//                ps = con.prepareStatement(sql);
-//                rs = ps.executeQuery();
-//
-//                while (rs.next()) {
-//                    Cliente cli = new Cliente();
-//                    cli.setIdCliente(rs.getString("idCliente"));
-//                    cli.setApellidos(rs.getString("apellidos"));
-//                    cli.setNombres(rs.getString("nombres"));
-//                    cli.setDireccion(rs.getString("direccion"));
-//                    cli.setDNI(rs.getString("DNI"));
-//                    cli.setTelefono(rs.getString("telefono"));
-//                    cli.setMovil(rs.getString("movil"));
-//
-//                    listaCliente.add(cli);
-//
-//                }
-//                request.setAttribute("Lista", listaCliente);
-//                request.getRequestDispatcher("listarClientes.jsp").forward(request, response);
-//            } catch (SQLException ex) {
-//                System.out.println("Error de SQL +" + ex.getMessage());
-//            } finally {
-//                conect.disconnect();
-//            }
-//
-//            break;
+                case "CerrarSesion":
+                    procesarLogout(request, response, usuarioDAO);
+                    break;
 
-            case "Loguin":
-                String username = request.getParameter("username");
-                String password = request.getParameter("password");
-
-                if (username == null || password == null || username.isEmpty() || password.isEmpty()) {
-                    request.setAttribute("errorLogin", "Todos los campos son obligatorios.");
-                    request.getRequestDispatcher("Vistas/Login.jsp").forward(request, response);
-                    return;
-                }
-
-                try {
-                    HttpSession sesion = request.getSession();
-
-                    // DECLARAMOS EL CONTADOR DE INTENTOS FALLIDOS
-                    Integer intentosFallidos = (Integer) sesion.getAttribute("intentosFallidos_" + username);
-                    if (intentosFallidos == null) {
-                        intentosFallidos = 0;
-                    }
-
-                    // 1. Buscar usuario
-                    String sql = "SELECT d.*, c.Estados, c.Num_Ingresos, c.Permisos FROM datosusuarios d "
-                            + "JOIN catusuario c ON d.codUsuario = c.codUsuario "
-                            + "WHERE d.usuario = ?";
-                    ps = con.prepareStatement(sql);
-                    ps.setString(1, username);
-                    rs = ps.executeQuery();
-
-                    Usuario user = null;
-                    String estado = null;
-
-                    if (rs.next()) {
-                        user = new Usuario();
-                        user.setCodUsuario(rs.getString("codUsuario"));
-                        user.setUsuario(rs.getString("usuario"));
-                        user.setPassword(rs.getString("password"));
-                        user.setNombres(rs.getString("nombres"));
-                        user.setApellidos(rs.getString("apellidos"));
-                        user.setEmail(rs.getString("email"));
-                        user.setEstado(rs.getString("Estados"));
-                        user.setPermisos(rs.getString("Permisos"));
-                        user.setNumIngresos(rs.getInt("Num_Ingresos"));
-                        estado = rs.getString("Estados");
-                    }
-
-                    if (user == null) {
-                        request.setAttribute("errorLogin", "Usuario no existe.");
-                        request.getRequestDispatcher("Vistas/Login.jsp").forward(request, response);
-                        return;
-                    }
-
-                    // VERIFICA SI ESTA BLOQUEADO EL USUARIO
-                    if ("Bloqueado".equalsIgnoreCase(estado)||"Eliminado".equalsIgnoreCase(estado)) {
-                        request.setAttribute("errorLogin", "Tu cuenta está inactiva. Contacta al administrador.");
-                        request.getRequestDispatcher("Vistas/Login.jsp").forward(request, response);
-                        return;
-                    }
-
-                    // VALIDA LA PASSWORD
-                    if (!password.equals(user.getPassword())) {
-                        intentosFallidos++;
-                        sesion.setAttribute("intentosFallidos_" + username, intentosFallidos);
-
-                        if (intentosFallidos >= 3) {
-                            // Actualizar en la BD a "Bloqueado"
-                            String sqlBlock = "UPDATE catusuario SET Estados = 'Bloqueado' WHERE codUsuario = ?";
-                            ps = con.prepareStatement(sqlBlock);
-                            ps.setString(1, user.getCodUsuario());
-                            ps.executeUpdate();
-
-                            request.setAttribute("errorLogin", "Has superado los 3 intentos. Tu cuenta ha sido bloqueada.");
-                        } else {
-                            request.setAttribute("errorLogin", "Contraseña incorrecta. Intento " + intentosFallidos + " de 3.");
-                        }
-
-                        request.getRequestDispatcher("Vistas/Login.jsp").forward(request, response);
-                        return;
-                    }
-
-                    // RESETEO DE INTENTOS
-                    sesion.setAttribute("intentosFallidos_" + username, 0);
-
-                    // ACTUALIZA EL EnLinea y NumIngresos
-                    String sql2 = "UPDATE catusuario SET EnLinea = 1, Num_Ingresos = Num_Ingresos + 1 WHERE codUsuario = ?";
-                    ps = con.prepareStatement(sql2);
-                    ps.setString(1, user.getCodUsuario());
-                    ps.executeUpdate();
-                    
-                    // ACTUALIZA LA HORA Y FECHA DE ULTIMA CONEXION
-                    String sql3 = "UPDATE altusuario SET Fec_UltimoAcceso = ?, Hor_UltimoAcceso	 = ? WHERE codUsuario = ?";
-                    ps = con.prepareStatement(sql3);
-                    ps.setString(1, Herramientas.Persistencias.getFecha());
-                    ps.setString(2, Herramientas.Persistencias.getHora());
-                    ps.setString(3, user.getCodUsuario());
-                    ps.executeUpdate();
-
-                    Herramientas.Persistencias.setUser(user);
-                    sesion.setAttribute("usuarioLogueado", user);
+                case "VolverInicio":
                     request.getRequestDispatcher("Vistas/Index.jsp").forward(request, response);
+                    break;
 
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                    request.setAttribute("errorLogin", "Error en la base de datos: " + e.getMessage());
-                    request.getRequestDispatcher("Vistas/Login.jsp").forward(request, response);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    request.setAttribute("errorLogin", "Ocurrió un error inesperado: " + e.getMessage());
-                    request.getRequestDispatcher("Vistas/Login.jsp").forward(request, response);
-                }
+                case "Consultar":
+                    // Implementar consulta si es necesario
+                    break;
 
-                break;
+                case "Nuevo":
+                    // Implementar creación de usuario
+                    break;
 
-            case "Consultar":
-                break;
+                case "Modificar":
+                    // Implementar modificación de usuario
+                    break;
 
-            case "Nuevo":
-                break;
+                case "Eliminar":
+                    // Implementar eliminación de usuario
+                    break;
 
-            case "Modificar":
-                break;
+                default:
+                    System.out.println("Opción no válida: " + Op);
+            }
+        } finally {
+            usuarioDAO.cerrarConexion();
+        }
+    }
 
-            case "Eliminar":
-                break;
+    protected void verLogin(HttpServletRequest request, HttpServletResponse response, String error)
+            throws ServletException, IOException {
 
-            case "CerrarSesion":
-                try {
+        try {
+            String url = request.getContextPath() + "/Vistas/Login.jsp";
 
-                //ALTERA LOS DATOS DE EN LINEA A DESCONCETADO
-                String CodUsuario = Herramientas.Persistencias.getUser().getCodUsuario();
-
-                String sql = "UPDATE catusuario SET EnLinea = 0 WHERE codUsuario = ?";
-                ps = con.prepareStatement(sql);
-                ps.setString(1, CodUsuario);
-                ps.executeUpdate();
-
-                Herramientas.Persistencias.setUser(null);
-                request.getRequestDispatcher("/Login.jsp").forward(request, response);
-
-            } catch (SQLException e) {
-                e.printStackTrace();
-                request.setAttribute("errorLogout", "Error en la base de datos: " + e.getMessage());
-                request.getRequestDispatcher("Vistas/Login.jsp").forward(request, response);
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                request.setAttribute("errorLogout", "Ocurrió un error inesperado: " + e.getMessage());
-                request.getRequestDispatcher("Vistas/Login.jsp").forward(request, response);
-
+            if (error != null && !error.trim().isEmpty()) {
+                // Codificar el error para URL
+                String encodedError = java.net.URLEncoder.encode(error, "UTF-8");
+                url += "?errorLogin=" + encodedError;
             }
 
-            break;
-            default:
-                System.out.println("MALA ");
+            response.sendRedirect(url);
+
+        } catch (Exception e) {
+            // Fallback en caso de error
+            response.sendRedirect(request.getContextPath() + "/Vistas/Login.jsp");
+        }
+    }
+
+    private void procesarLogin(HttpServletRequest request, HttpServletResponse response, UsuarioDAO usuarioDAO)
+            throws ServletException, IOException {
+
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+
+        // Validar campos vacíos
+        if (username == null || password == null || username.isEmpty() || password.isEmpty()) {
+            verLogin(request, response, "Todos los campos son obligatorios.");
+            return;
+        }
+
+        try {
+            HttpSession sesion = request.getSession();
+            Integer intentosFallidos = (Integer) sesion.getAttribute("intentosFallidos_" + username);
+            if (intentosFallidos == null) {
+                intentosFallidos = 0;
+            }
+
+            // Buscar usuario en el modelo
+            Usuario user = usuarioDAO.buscarUsuarioPorUsername(username);
+
+            if (user == null) {
+                verLogin(request, response, "Usuario no existe");
+                return;
+            }
+
+            // Verificar si está bloqueado o eliminado
+            if ("Bloqueado".equalsIgnoreCase(user.getEstado()) || "Eliminado".equalsIgnoreCase(user.getEstado())) {
+                verLogin(request, response, "Tu cuenta está inactiva. Contacta al administrador.");
+                return;
+            }
+
+            // Validar password
+            if (!password.equals(user.getPassword())) {
+                intentosFallidos++;
+                sesion.setAttribute("intentosFallidos_" + username, intentosFallidos);
+
+                if (intentosFallidos >= 3) {
+                    usuarioDAO.bloquearUsuario(user.getCodUsuario());
+                    verLogin(request, response, "Has superado los 3 intentos. Tu cuenta ha sido bloqueada.");
+                } else {
+                    verLogin(request, response, "Contraseña incorrecta. Intento " + intentosFallidos + " de 3.");
+                }
+                return;
+            }
+
+            // Login exitoso
+            sesion.setAttribute("intentosFallidos_" + username, 0);
+            usuarioDAO.actualizarLoginExitoso(user.getCodUsuario());
+
+            Herramientas.Persistencias.setUser(user);
+            sesion.setAttribute("usuarioLogueado", user);
+
+            // Redirigir al index después de login exitoso
+            request.getRequestDispatcher("Vistas/Index.jsp").forward(request, response);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            verLogin(request, response, "Error en la base de datos: " + e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+            verLogin(request, response, "Ocurrió un error inesperado: " + e.getMessage());
+        }
+    }
+
+    private void procesarLogout(HttpServletRequest request, HttpServletResponse response, UsuarioDAO usuarioDAO)
+            throws ServletException, IOException {
+
+        try {
+            String codUsuario = Herramientas.Persistencias.getUser().getCodUsuario();
+            usuarioDAO.actualizarLogout(codUsuario);
+
+            Herramientas.Persistencias.setUser(null);
+            request.getSession().invalidate();
+            response.sendRedirect(request.getContextPath() + "/index.jsp");
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            request.setAttribute("errorLogout", "Error en la base de datos: " + e.getMessage());
+            request.getRequestDispatcher("Vistas/Login.jsp").forward(request, response);
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.setAttribute("errorLogout", "Ocurrió un error inesperado: " + e.getMessage());
+            request.getRequestDispatcher("Vistas/Login.jsp").forward(request, response);
         }
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        doGet(request, response);
     }
 
     @Override
     public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
-
+        return "Controlador de usuarios";
+    }
 }
