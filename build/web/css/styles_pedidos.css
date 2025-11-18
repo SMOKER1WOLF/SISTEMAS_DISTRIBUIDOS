@@ -1,3 +1,4 @@
+
 /* SECCION DE DATOS DEL PEDIDO Y CLIENTE */
 .datosCliente {
   display: grid;
@@ -88,9 +89,78 @@ select.form-select {
   margin-top: 1rem;
 }
 
-/* SECCION DE  CUENTA */
+/* SECCION DE CUENTA (totales del pedido) */
+/* CONTENEDOR GENERAL DE LA CUENTA */
 .cuenta {
-  align-content: flex-end;
   width: 100%;
+  display: flex;
+  justify-content: flex-end; /* ubicar a la derecha */
+  margin-top: 1.5rem;
   box-sizing: border-box;
+}
+
+/* TARJETA DE TOTALES */
+.cuenta #resumenTotales {
+  background: linear-gradient(135deg, #ffffff, #f1f4f7);
+  border: 1px solid #d8dfe6;
+  border-radius: 18px;
+  padding: 1.5rem;
+  width: 320px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+  animation: fadeInCard 0.3s ease-in-out;
+}
+
+/* ANIMACIÓN DE ENTRADA */
+@keyframes fadeInCard {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* TITULO DEL RESUMEN */
+.cuenta #resumenTotales .tituloCuenta {
+  font-size: 1.2rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+  color: #1a3d6b;
+  text-align: center;
+}
+
+/* CADA LÍNEA DE TOTALES */
+.cuenta #resumenTotales label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1rem;
+  padding: 0.4rem 0;
+  font-weight: 600;
+  border-bottom: 1px solid #e2e6ea;
+  color: #2c3e50;
+}
+
+/* ÚLTIMA LÍNEA SIN BORDE */
+.cuenta #resumenTotales label:last-of-type {
+  border-bottom: none;
+}
+
+/* TOTAL EN NEGRITA DESTACADO */
+.cuenta #resumenTotales .totalFinal {
+  font-size: 1.2rem;
+  font-weight: 900;
+  color: #0d6efd;        /* azul tipo Bootstrap */
+}
+
+/* --- Botón Volver --- */
+.btn-volver {
+    display: inline-block;
+    background: #3498db;
+    color: white;
+    font-weight: normal;
+    padding: 15px 25px;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: background 0.3s ease;
+}
+
+.btn-volver:hover {
+    background: #BADFDB;   /* tono más oscuro al pasar el mouse */
+    color: white;
 }

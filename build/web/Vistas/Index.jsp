@@ -33,6 +33,7 @@
                 <hr>
                 <h2>Pedidos</h2>
                 <p><a href="${pageContext.request.contextPath}/PedidoControlador?Op=MostrarFormulario">Registrar Pedido</a></p>
+                <p><a href="${pageContext.request.contextPath}/PedidoControlador?Op=Listar">Listar pedidos</a></p>
 
             </div>
         </div>

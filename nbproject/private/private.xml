@@ -3,13 +3,14 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/USUARIO/Documents/proyecto_web/SISTEMAS_DISTRIBUIDOS/web/Vistas/Login.jsp</file>
-            <file>file:/C:/Users/USUARIO/Documents/proyecto_web/SISTEMAS_DISTRIBUIDOS/src/java/Controladores/UsuarioControlador.java</file>
             <file>file:/C:/Users/USUARIO/Documents/proyecto_web/SISTEMAS_DISTRIBUIDOS/web/Vistas/Index.jsp</file>
-            <file>file:/C:/Users/USUARIO/Documents/proyecto_web/SISTEMAS_DISTRIBUIDOS/src/java/Modelos/ClienteDAO.java</file>
-            <file>file:/C:/Users/USUARIO/Documents/proyecto_web/SISTEMAS_DISTRIBUIDOS/src/java/Controladores/ClienteControlador.java</file>
+            <file>file:/C:/Users/USUARIO/Documents/proyecto_web/SISTEMAS_DISTRIBUIDOS/web/Vistas/nuevoProducto.jsp</file>
+            <file>file:/C:/Users/USUARIO/Documents/proyecto_web/SISTEMAS_DISTRIBUIDOS/web/Vistas/modificarProducto.jsp</file>
+            <file>file:/C:/Users/USUARIO/Documents/proyecto_web/SISTEMAS_DISTRIBUIDOS/src/java/Controladores/ProductoControlador.java</file>
+            <file>file:/C:/Users/USUARIO/Documents/proyecto_web/SISTEMAS_DISTRIBUIDOS/web/Vistas/listarProductos.jsp</file>
             <file>file:/C:/Users/USUARIO/Documents/proyecto_web/SISTEMAS_DISTRIBUIDOS/web/Vistas/listarClientes.jsp</file>
-            <file>file:/C:/Users/USUARIO/Documents/proyecto_web/SISTEMAS_DISTRIBUIDOS/src/java/Modelos/UsuarioDAO.java</file>
+            <file>file:/C:/Users/USUARIO/Documents/proyecto_web/SISTEMAS_DISTRIBUIDOS/src/java/Entidades/Producto.java</file>
+            <file>file:/C:/Users/USUARIO/Documents/proyecto_web/SISTEMAS_DISTRIBUIDOS/src/java/Modelos/ProductoDAO.java</file>
         </group>
     </open-files>
 </project-private>
