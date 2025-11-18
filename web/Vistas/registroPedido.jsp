@@ -21,12 +21,12 @@
                 
                 if (mensaje != null) {
             %>
-                <div class="alert alert-success"><%= mensaje %></div>
+            <div class="alert alert-success"><%= mensaje %></div>
             <%
                 }
                 if (error != null) {
             %>
-                <div class="alert alert-danger"><%= error %></div>
+            <div class="alert alert-danger"><%= error %></div>
             <%
                 }
             %>
@@ -47,14 +47,14 @@
                                     if (listaClientes != null) {
                                         for (Entidades.Cliente cliente : listaClientes) {
                                 %>
-                                    <option 
-                                        value="<%= cliente.getIdCliente() %>"
-                                        data-nombres="<%= cliente.getNombres() %>"
-                                        data-apellidos="<%= cliente.getApellidos() %>"
-                                        data-direccion="<%= cliente.getDireccion() %>"
-                                        data-telefono="<%= cliente.getTelefono() %>">
-                                        <%= cliente.getIdCliente() %> - <%= cliente.getNombres() %> <%= cliente.getApellidos() %>
-                                    </option>
+                                <option 
+                                    value="<%= cliente.getIdCliente() %>"
+                                    data-nombres="<%= cliente.getNombres() %>"
+                                    data-apellidos="<%= cliente.getApellidos() %>"
+                                    data-direccion="<%= cliente.getDireccion() %>"
+                                    data-telefono="<%= cliente.getTelefono() %>">
+                                    <%= cliente.getIdCliente() %> - <%= cliente.getNombres() %> <%= cliente.getApellidos() %>
+                                </option>
                                 <%
                                         }
                                     }
@@ -103,7 +103,7 @@
 
                 </section>
 
-                <table class="table" id="tablaItems">
+                <table class="table table-responsive-custom" id="tablaItems">
                     <thead>
                         <tr>
                             <th>Acciones</th>
@@ -129,15 +129,15 @@
                     </tfoot>
                 </table>
 
-                <section class="d-flex justify-content-end mt-4">
-                    <div class="card shadow-sm p-3" style="width: 250px;">
-                        <h6 class="text-center mb-3">Resumen</h6>
-
+                <section class="cuenta">
+                    <div id="resumenTotales">
+                        <h6 class="tituloCuenta mb-3">Resumen</h6>
                         <p class="mb-1">SubTotal: <strong id="subtotalText">0.00</strong></p>
                         <p class="mb-1">IGV: <strong id="igvText">0.00</strong></p>
-                        <p class="mb-1">Total: <strong id="totalText">0.00</strong></p>
+                        <p class="mb-1 totalFinal">Total: <strong id="totalText">0.00</strong></p>
                     </div>
                 </section>
+                        <br>
 
                 <div class="modalProducto" id="modalProducto">
                     <div class="modal-content">
@@ -152,13 +152,13 @@
                                     if (listaProductos != null) {
                                         for (Entidades.Producto pro : listaProductos) {
                                 %>
-                                    <option 
-                                        value="<%= pro.getIdArticulo() %>"
-                                        data-nombre="<%= pro.getNombre() %>"
-                                        data-stock="<%= pro.getCantidad() %>"
-                                        data-precio="<%= pro.getPrecio() %>">
-                                        <%= pro.getIdArticulo() %> - <%= pro.getNombre() %>
-                                    </option>
+                                <option 
+                                    value="<%= pro.getIdArticulo() %>"
+                                    data-nombre="<%= pro.getNombre() %>"
+                                    data-stock="<%= pro.getCantidad() %>"
+                                    data-precio="<%= pro.getPrecio() %>">
+                                    <%= pro.getIdArticulo() %> - <%= pro.getNombre() %>
+                                </option>
                                 <%
                                         }
                                     }
