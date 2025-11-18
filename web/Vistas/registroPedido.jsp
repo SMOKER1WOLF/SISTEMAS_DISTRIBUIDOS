@@ -343,7 +343,7 @@
             const nombre = selectedOption.getAttribute('data-nombre');
             const precio = parseFloat(document.getElementById('modalprecio').value);
             const cantidad = parseInt(document.getElementById('modalcantidad').value);
-            const stock = parseInt(selectedOption.getAttribute('data-stock'));
+            let stock = parseInt(selectedOption.getAttribute('data-stock'));
 
             if (isNaN(cantidad) || cantidad < 1) {
                 alert('Por favor, ingrese una cantidad válida.');
@@ -382,7 +382,7 @@
             cellIgv.innerText = igv.toFixed(2);
             cellSubtotal.innerText = subTotal.toFixed(2);
 
-            // Agregar campos hidden usando DOM
+            // Hidden fields
             const inputId = document.createElement('input');
             inputId.type = 'hidden';
             inputId.name = 'idArticulo';
@@ -401,9 +401,22 @@
             inputPrecio.value = precio.toFixed(2);
             newRow.appendChild(inputPrecio);
 
-            console.log("✅ Producto agregado a la tabla. Hidden fields creados.");
+            console.log("✅ Producto agregado a la tabla.");
 
-            // Limpiar y cerrar modal
+            // 🔥🔥🔥 REDUCIR STOCK EN EL SELECT AUTOMÁTICAMENTE 🔥🔥🔥
+            stock = stock - cantidad;
+            selectedOption.setAttribute('data-stock', stock);
+
+            if (stock <= 0) {   
+                selectedOption.disabled = true;
+                selectedOption.textContent = `${nombre} (AGOTADO)`;
+            } else {
+                
+            }
+
+            document.getElementById("modalstock").value = stock;
+
+            // Limpiar modal
             selectProducto.selectedIndex = 0;
             document.getElementById("modalnombre").value = "";
             document.getElementById("modalstock").value = "";
@@ -426,6 +439,7 @@
 
     });
 </script>
+
 
 <script>
     // Validar que haya items antes de enviar el formulario
